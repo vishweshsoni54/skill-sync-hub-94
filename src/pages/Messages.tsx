@@ -15,10 +15,12 @@ const Messages = () => {
 
   const [currentUser, setCurrentUser] = useState<any>(null);
   const [conversations, setConversations] = useState<any[]>([]);
+  const [allUsers, setAllUsers] = useState<any[]>([]);
   const [selectedUser, setSelectedUser] = useState<any>(null);
   const [messages, setMessages] = useState<any[]>([]);
   const [newMessage, setNewMessage] = useState("");
   const [loading, setLoading] = useState(true);
+  const [showUserBrowser, setShowUserBrowser] = useState(false);
 
   useEffect(() => {
     initializeChat();
@@ -32,19 +34,21 @@ const Messages = () => {
   }, [recipientId, conversations]);
 
   useEffect(() => {
-    if (!selectedUser) return;
+    if (!currentUser) return;
 
     const channel = supabase
-      .channel("schema-db-changes")
+      .channel("messages-realtime")
       .on(
         "postgres_changes",
         {
           event: "*",
           schema: "public",
           table: "messages",
-          filter: `sender_id=eq.${selectedUser.id},recipient_id=eq.${currentUser?.id}`,
         },
-        () => loadMessages()
+        () => {
+          if (selectedUser) loadMessages();
+          initializeChat();
+        }
       )
       .subscribe();
 
@@ -93,6 +97,13 @@ const Messages = () => {
       setConversations(users || []);
     }
 
+    // Get all users for browsing
+    const { data: allProfiles } = await supabase
+      .from("profiles")
+      .select("*")
+      .neq("id", user.id);
+
+    setAllUsers(allProfiles || []);
     setLoading(false);
   };
 
@@ -173,10 +184,42 @@ const Messages = () => {
         {/* Conversations List */}
         <Card className="w-80 shadow-card flex flex-col">
           <CardContent className="p-4 flex-1 overflow-y-auto">
-            <h3 className="font-semibold mb-4">Conversations</h3>
-            {conversations.length === 0 ? (
+            <div className="flex items-center justify-between mb-4">
+              <h3 className="font-semibold">Conversations</h3>
+              <Button 
+                size="sm" 
+                variant="outline"
+                onClick={() => setShowUserBrowser(!showUserBrowser)}
+              >
+                {showUserBrowser ? "Hide" : "New Chat"}
+              </Button>
+            </div>
+
+            {showUserBrowser ? (
+              <div className="space-y-2">
+                <p className="text-xs text-muted-foreground mb-2">Select a user to message:</p>
+                {allUsers.map((user) => (
+                  <div
+                    key={user.id}
+                    onClick={() => {
+                      selectConversation(user);
+                      setShowUserBrowser(false);
+                    }}
+                    className="p-3 rounded-lg cursor-pointer transition-colors hover:bg-accent/10"
+                  >
+                    <div className="flex items-center gap-3">
+                      <div className="w-10 h-10 rounded-full gradient-card" />
+                      <div className="flex-1 min-w-0">
+                        <p className="font-medium truncate">{user.full_name}</p>
+                        <p className="text-xs text-muted-foreground truncate">{user.major}</p>
+                      </div>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            ) : conversations.length === 0 ? (
               <p className="text-sm text-muted-foreground text-center py-4">
-                No conversations yet. Browse students to start chatting!
+                No conversations yet. Click "New Chat" to start!
               </p>
             ) : (
               <div className="space-y-2">

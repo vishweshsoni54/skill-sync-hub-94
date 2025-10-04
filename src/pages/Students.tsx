@@ -20,6 +20,32 @@ const Students = () => {
   useEffect(() => {
     loadStudents();
     loadSkills();
+
+    const channel = supabase
+      .channel("students-realtime")
+      .on(
+        "postgres_changes",
+        {
+          event: "*",
+          schema: "public",
+          table: "profiles",
+        },
+        () => loadStudents()
+      )
+      .on(
+        "postgres_changes",
+        {
+          event: "*",
+          schema: "public",
+          table: "user_skills",
+        },
+        () => loadStudents()
+      )
+      .subscribe();
+
+    return () => {
+      supabase.removeChannel(channel);
+    };
   }, []);
 
   useEffect(() => {

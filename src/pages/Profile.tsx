@@ -19,6 +19,7 @@ const Profile = () => {
   const [skills, setSkills] = useState<any[]>([]);
   const [userSkills, setUserSkills] = useState<any[]>([]);
   const [badges, setBadges] = useState<any[]>([]);
+  const [allBadges, setAllBadges] = useState<any[]>([]);
   const [selectedSkill, setSelectedSkill] = useState("");
   const [proficiency, setProficiency] = useState("beginner");
 
@@ -26,6 +27,32 @@ const Profile = () => {
     loadProfile();
     loadSkills();
     loadBadges();
+
+    const channel = supabase
+      .channel("profile-realtime")
+      .on(
+        "postgres_changes",
+        {
+          event: "*",
+          schema: "public",
+          table: "user_badges",
+        },
+        () => loadBadges()
+      )
+      .on(
+        "postgres_changes",
+        {
+          event: "*",
+          schema: "public",
+          table: "user_skills",
+        },
+        () => loadProfile()
+      )
+      .subscribe();
+
+    return () => {
+      supabase.removeChannel(channel);
+    };
   }, []);
 
   const loadProfile = async () => {
@@ -60,11 +87,19 @@ const Profile = () => {
     const { data: { user } } = await supabase.auth.getUser();
     if (!user) return;
 
-    const { data } = await supabase
+    const { data: userBadges } = await supabase
       .from("user_badges")
       .select("*, badges(*)")
       .eq("user_id", user.id);
-    setBadges(data || []);
+    
+    setBadges(userBadges || []);
+
+    // Load all badges to show progress
+    const { data: allBadgesData } = await supabase
+      .from("badges")
+      .select("*");
+
+    setAllBadges(allBadgesData || []);
   };
 
   const handleSave = async () => {
@@ -238,26 +273,39 @@ const Profile = () => {
           <CardHeader>
             <CardTitle className="flex items-center gap-2">
               <Award className="w-5 h-5" />
-              Your Badges
+              Badges & Achievements
             </CardTitle>
-            <CardDescription>Achievements you've earned</CardDescription>
+            <CardDescription>Track your progress and earn badges</CardDescription>
           </CardHeader>
           <CardContent>
-            {badges.length === 0 ? (
-              <p className="text-muted-foreground text-center py-4">
-                No badges yet. Start collaborating to earn badges!
-              </p>
-            ) : (
-              <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
-                {badges.map((ub) => (
-                  <div key={ub.id} className="flex flex-col items-center p-4 border rounded-lg hover-scale">
-                    <div className="text-4xl mb-2">{ub.badges.icon}</div>
-                    <h4 className="font-semibold text-sm text-center">{ub.badges.name}</h4>
-                    <p className="text-xs text-muted-foreground text-center">{ub.badges.description}</p>
+            <div className="space-y-4">
+              {allBadges.map((badge) => {
+                const earned = badges.find((b) => b.badges.id === badge.id);
+                return (
+                  <div
+                    key={badge.id}
+                    className={`p-4 rounded-lg border transition-all ${
+                      earned ? "bg-primary/10 border-primary/20 shadow-sm" : "bg-muted/20 border-muted opacity-70"
+                    }`}
+                  >
+                    <div className="flex items-start gap-3">
+                      <span className="text-3xl">{badge.icon}</span>
+                      <div className="flex-1">
+                        <div className="flex items-center gap-2">
+                          <h4 className="font-semibold">{badge.name}</h4>
+                          {earned && (
+                            <Badge className="bg-primary text-primary-foreground text-xs">
+                              ✓ Earned
+                            </Badge>
+                          )}
+                        </div>
+                        <p className="text-sm text-muted-foreground mt-1">{badge.description}</p>
+                      </div>
+                    </div>
                   </div>
-                ))}
-              </div>
-            )}
+                );
+              })}
+            </div>
           </CardContent>
         </Card>
       </main>

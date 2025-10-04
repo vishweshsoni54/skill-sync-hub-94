@@ -26,6 +26,32 @@ const AnonymousPitches = () => {
 
   useEffect(() => {
     loadData();
+
+    const channel = supabase
+      .channel("pitches-realtime")
+      .on(
+        "postgres_changes",
+        {
+          event: "*",
+          schema: "public",
+          table: "anonymous_pitches",
+        },
+        () => loadData()
+      )
+      .on(
+        "postgres_changes",
+        {
+          event: "*",
+          schema: "public",
+          table: "pitch_interest",
+        },
+        () => loadData()
+      )
+      .subscribe();
+
+    return () => {
+      supabase.removeChannel(channel);
+    };
   }, []);
 
   const loadData = async () => {
