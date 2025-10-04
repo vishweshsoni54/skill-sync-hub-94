@@ -14,8 +14,13 @@ const Dashboard = () => {
   const [user, setUser] = useState<any>(null);
   const [loading, setLoading] = useState(true);
 
+  const [profile, setProfile] = useState<any>(null);
+  const [students, setStudents] = useState<any[]>([]);
+  const [projects, setProjects] = useState<any[]>([]);
+
   useEffect(() => {
     checkUser();
+    loadDashboardData();
   }, []);
 
   const checkUser = async () => {
@@ -24,8 +29,41 @@ const Dashboard = () => {
       navigate("/login");
     } else {
       setUser(user);
+      
+      // Load profile
+      const { data: profileData } = await supabase
+        .from("profiles")
+        .select("*")
+        .eq("id", user.id)
+        .single();
+      setProfile(profileData);
     }
     setLoading(false);
+  };
+
+  const loadDashboardData = async () => {
+    // Load featured students
+    const { data: studentsData } = await supabase
+      .from("profiles")
+      .select(`
+        *,
+        user_skills(*, skills(*))
+      `)
+      .limit(3);
+    setStudents(studentsData || []);
+
+    // Load open projects
+    const { data: projectsData } = await supabase
+      .from("projects")
+      .select(`
+        *,
+        profiles!projects_owner_id_fkey(full_name),
+        project_members(count),
+        project_skills(*, skills(*))
+      `)
+      .eq("status", "open")
+      .limit(2);
+    setProjects(projectsData || []);
   };
 
   const handleLogout = async () => {
@@ -54,9 +92,9 @@ const Dashboard = () => {
             SkillMatch
           </h1>
           <div className="flex items-center gap-4">
-            <span className="text-sm text-muted-foreground">
-              {user?.user_metadata?.full_name || user?.email}
-            </span>
+            <Button variant="ghost" size="sm" onClick={() => navigate("/profile")}>
+              {profile?.full_name || user?.email}
+            </Button>
             <Button variant="outline" size="sm" onClick={handleLogout}>
               <LogOut className="w-4 h-4 mr-2" />
               Logout
@@ -69,7 +107,7 @@ const Dashboard = () => {
         {/* Welcome Section */}
         <div className="mb-8 animate-fade-in">
           <h2 className="text-4xl font-bold mb-2">
-            Welcome, {user?.user_metadata?.full_name?.split(' ')[0] || 'Student'}! 👋
+            Welcome, {profile?.full_name?.split(' ')[0] || 'Student'}! 👋
           </h2>
           <p className="text-muted-foreground text-lg">
             Discover talented students and exciting projects
@@ -89,7 +127,7 @@ const Dashboard = () => {
 
         {/* Quick Actions */}
         <div className="grid md:grid-cols-3 gap-6 mb-12">
-          <Card className="hover-scale cursor-pointer shadow-card animate-fade-in border-primary/20" style={{ animationDelay: '0.2s' }}>
+          <Card className="hover-scale cursor-pointer shadow-card animate-fade-in border-primary/20" style={{ animationDelay: '0.2s' }} onClick={() => navigate("/students")}>
             <CardHeader>
               <Users className="w-8 h-8 text-primary mb-2" />
               <CardTitle>Browse Students</CardTitle>
@@ -104,7 +142,7 @@ const Dashboard = () => {
             </CardContent>
           </Card>
 
-          <Card className="hover-scale cursor-pointer shadow-card animate-fade-in border-accent/20" style={{ animationDelay: '0.3s' }}>
+          <Card className="hover-scale cursor-pointer shadow-card animate-fade-in border-accent/20" style={{ animationDelay: '0.3s' }} onClick={() => navigate("/projects")}>
             <CardHeader>
               <Rocket className="w-8 h-8 text-accent mb-2" />
               <CardTitle>Browse Projects</CardTitle>
@@ -119,19 +157,19 @@ const Dashboard = () => {
             </CardContent>
           </Card>
 
-          <Card className="hover-scale cursor-pointer shadow-card animate-fade-in border-secondary/20" style={{ animationDelay: '0.4s' }}>
+          <Card className="hover-scale cursor-pointer shadow-card animate-fade-in border-secondary/20" style={{ animationDelay: '0.4s' }} onClick={() => navigate("/pitches")}>
             <CardHeader>
               <div className="w-8 h-8 rounded-full bg-secondary/20 flex items-center justify-center mb-2">
-                <span className="text-secondary font-bold">+</span>
+                <span className="text-secondary font-bold text-xl">💡</span>
               </div>
-              <CardTitle>Create Project</CardTitle>
+              <CardTitle>Anonymous Pitches</CardTitle>
               <CardDescription>
-                Start a new project and find teammates
+                Share ideas without revealing identity
               </CardDescription>
             </CardHeader>
             <CardContent>
               <Button variant="outline" className="w-full border-secondary text-secondary hover:bg-secondary/10">
-                New Project
+                Browse Pitches
               </Button>
             </CardContent>
           </Card>
@@ -139,28 +177,35 @@ const Dashboard = () => {
 
         {/* Featured Students Preview */}
         <section className="mb-12">
-          <h3 className="text-2xl font-bold mb-6">Featured Students</h3>
+          <div className="flex items-center justify-between mb-6">
+            <h3 className="text-2xl font-bold">Featured Students</h3>
+            <Button variant="link" onClick={() => navigate("/students")}>View All</Button>
+          </div>
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {[1, 2, 3].map((i) => (
-              <Card key={i} className="hover-scale shadow-card animate-fade-in" style={{ animationDelay: `${0.5 + i * 0.1}s` }}>
+            {students.map((student, i) => (
+              <Card key={student.id} className="hover-scale shadow-card animate-fade-in cursor-pointer" style={{ animationDelay: `${0.5 + i * 0.1}s` }} onClick={() => navigate(`/messages?user=${student.id}`)}>
                 <CardHeader>
                   <div className="flex items-start justify-between">
                     <div>
-                      <CardTitle className="text-lg">Student Name</CardTitle>
-                      <CardDescription>Computer Science • 3rd Year</CardDescription>
+                      <CardTitle className="text-lg">{student.full_name}</CardTitle>
+                      <CardDescription>
+                        {student.major && student.year ? `${student.major} • ${student.year}` : student.major || student.year || "Student"}
+                      </CardDescription>
                     </div>
                     <div className="w-12 h-12 rounded-full gradient-card" />
                   </div>
                 </CardHeader>
                 <CardContent>
-                  <p className="text-sm text-muted-foreground mb-4">
-                    Passionate about web development and AI. Looking to collaborate on innovative projects.
+                  <p className="text-sm text-muted-foreground mb-4 line-clamp-2">
+                    {student.bio || "No bio yet."}
                   </p>
-                  <div className="flex flex-wrap gap-2">
-                    <Badge variant="secondary">React</Badge>
-                    <Badge variant="secondary">Python</Badge>
-                    <Badge variant="secondary">UI/UX</Badge>
-                  </div>
+                  {student.user_skills && student.user_skills.length > 0 && (
+                    <div className="flex flex-wrap gap-2">
+                      {student.user_skills.slice(0, 3).map((us: any) => (
+                        <Badge key={us.id} variant="secondary">{us.skills.name}</Badge>
+                      ))}
+                    </div>
+                  )}
                 </CardContent>
               </Card>
             ))}
@@ -169,34 +214,44 @@ const Dashboard = () => {
 
         {/* Featured Projects Preview */}
         <section>
-          <h3 className="text-2xl font-bold mb-6">Open Projects</h3>
+          <div className="flex items-center justify-between mb-6">
+            <h3 className="text-2xl font-bold">Open Projects</h3>
+            <Button variant="link" onClick={() => navigate("/projects")}>View All</Button>
+          </div>
           <div className="grid md:grid-cols-2 gap-6">
-            {[1, 2].map((i) => (
-              <Card key={i} className="hover-scale shadow-card animate-fade-in border-l-4 border-l-accent" style={{ animationDelay: `${0.8 + i * 0.1}s` }}>
-                <CardHeader>
-                  <div className="flex items-start justify-between">
-                    <div>
-                      <CardTitle>AI Study Assistant</CardTitle>
-                      <CardDescription>3 members • Looking for 2 more</CardDescription>
+            {projects.map((project, i) => {
+              const memberCount = project.project_members?.[0]?.count || 0;
+              return (
+                <Card key={project.id} className="hover-scale shadow-card animate-fade-in border-l-4 border-l-accent cursor-pointer" style={{ animationDelay: `${0.8 + i * 0.1}s` }} onClick={() => navigate("/projects")}>
+                  <CardHeader>
+                    <div className="flex items-start justify-between">
+                      <div>
+                        <CardTitle>{project.title}</CardTitle>
+                        <CardDescription>
+                          by {project.profiles?.full_name} • {memberCount}/{project.max_members} members
+                        </CardDescription>
+                      </div>
+                      <Badge className="bg-accent text-accent-foreground">Open</Badge>
                     </div>
-                    <Badge className="bg-accent text-accent-foreground">Open</Badge>
-                  </div>
-                </CardHeader>
-                <CardContent>
-                  <p className="text-sm text-muted-foreground mb-4">
-                    Building an AI-powered study assistant to help students organize notes and generate quizzes.
-                  </p>
-                  <div className="flex flex-wrap gap-2 mb-4">
-                    <Badge variant="outline">React Native</Badge>
-                    <Badge variant="outline">TensorFlow</Badge>
-                    <Badge variant="outline">MongoDB</Badge>
-                  </div>
-                  <Button variant="outline" className="w-full">
-                    Learn More
-                  </Button>
-                </CardContent>
-              </Card>
-            ))}
+                  </CardHeader>
+                  <CardContent>
+                    <p className="text-sm text-muted-foreground mb-4 line-clamp-2">
+                      {project.description || "No description provided."}
+                    </p>
+                    {project.project_skills && project.project_skills.length > 0 && (
+                      <div className="flex flex-wrap gap-2 mb-4">
+                        {project.project_skills.slice(0, 3).map((ps: any) => (
+                          <Badge key={ps.id} variant="outline">{ps.skills.name}</Badge>
+                        ))}
+                      </div>
+                    )}
+                    <Button variant="outline" className="w-full">
+                      Learn More
+                    </Button>
+                  </CardContent>
+                </Card>
+              );
+            })}
           </div>
         </section>
       </main>
