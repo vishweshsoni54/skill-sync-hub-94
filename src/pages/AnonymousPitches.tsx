@@ -2,7 +2,6 @@ import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
 import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
@@ -328,13 +327,13 @@ const AnonymousPitches = () => {
           </div>
 
           {pitches.length === 0 && (
-            <Card className="shadow-card">
-              <CardContent className="py-12 text-center">
+            <div className="bg-card/30 rounded-lg border border-border">
+              <div className="py-12 text-center">
                 <p className="text-muted-foreground">
                   No anonymous pitches available. Create one to get started!
                 </p>
-              </CardContent>
-            </Card>
+              </div>
+            </div>
           )}
         </section>
       </main>

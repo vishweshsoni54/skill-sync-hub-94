@@ -2,7 +2,6 @@ import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
 import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
@@ -261,8 +260,8 @@ const Projects = () => {
 
       <main className="container mx-auto px-4 py-8">
         {/* Search */}
-        <Card className="mb-8 shadow-card">
-          <CardContent className="pt-6">
+        <div className="mb-8 bg-card/30 rounded-lg border border-border">
+          <div className="p-6">
             <div className="relative">
               <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground w-5 h-5" />
               <Input
@@ -272,8 +271,8 @@ const Projects = () => {
                 className="pl-10"
               />
             </div>
-          </CardContent>
-        </Card>
+          </div>
+        </div>
 
         {/* Results */}
         <div className="mb-4 text-sm text-muted-foreground">
@@ -334,11 +333,11 @@ const Projects = () => {
         </div>
 
         {filteredProjects.length === 0 && (
-          <Card className="shadow-card">
-            <CardContent className="py-12 text-center">
+          <div className="bg-card/30 rounded-lg border border-border">
+            <div className="py-12 text-center">
               <p className="text-muted-foreground">No projects found. Be the first to create one!</p>
-            </CardContent>
-          </Card>
+            </div>
+          </div>
         )}
       </main>
     </div>

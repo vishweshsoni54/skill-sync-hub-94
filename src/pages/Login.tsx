@@ -3,7 +3,6 @@ import { useNavigate, Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { useToast } from "@/hooks/use-toast";
 import { supabase } from "@/integrations/supabase/client";
 import { Loader2 } from "lucide-react";
@@ -74,16 +73,16 @@ const Login = () => {
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-background via-primary/5 to-accent/5 p-4">
-      <Card className="w-full max-w-md shadow-card animate-fade-in">
-        <CardHeader className="space-y-1">
-          <CardTitle className="text-3xl text-center gradient-hero bg-clip-text text-transparent">
+      <div className="w-full max-w-md bg-card/30 rounded-lg border border-border animate-fade-in">
+        <div className="p-6 space-y-1">
+          <h3 className="text-3xl text-center font-semibold gradient-hero bg-clip-text text-transparent">
             {resetMode ? "Reset Password" : "Welcome Back"}
-          </CardTitle>
-          <CardDescription className="text-center">
+          </h3>
+          <p className="text-center text-sm text-muted-foreground">
             {resetMode ? "Enter your email to receive a reset link" : "Sign in to continue to SkillMatch"}
-          </CardDescription>
-        </CardHeader>
-        <CardContent>
+          </p>
+        </div>
+        <div className="px-6 pb-6">
           <form onSubmit={resetMode ? handleResetPassword : handleLogin} className="space-y-4">
             <div className="space-y-2">
               <Label htmlFor="email">Email</Label>
@@ -145,8 +144,8 @@ const Login = () => {
               </div>
             )}
           </div>
-        </CardContent>
-      </Card>
+        </div>
+      </div>
     </div>
   );
 };

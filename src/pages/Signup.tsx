@@ -3,7 +3,6 @@ import { useNavigate, Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { useToast } from "@/hooks/use-toast";
 import { supabase } from "@/integrations/supabase/client";
 import { Loader2 } from "lucide-react";
@@ -52,16 +51,16 @@ const Signup = () => {
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-background via-accent/5 to-secondary/5 p-4">
-      <Card className="w-full max-w-md shadow-card animate-fade-in">
-        <CardHeader className="space-y-1">
-          <CardTitle className="text-3xl text-center gradient-accent bg-clip-text text-transparent">
+      <div className="w-full max-w-md bg-card/30 rounded-lg border border-border animate-fade-in">
+        <div className="p-6 space-y-1">
+          <h3 className="text-3xl text-center font-semibold gradient-accent bg-clip-text text-transparent">
             Join SkillMatch
-          </CardTitle>
-          <CardDescription className="text-center">
+          </h3>
+          <p className="text-center text-sm text-muted-foreground">
             Connect with talented students and collaborate on projects
-          </CardDescription>
-        </CardHeader>
-        <CardContent>
+          </p>
+        </div>
+        <div className="px-6 pb-6">
           <form onSubmit={handleSignup} className="space-y-4">
             <div className="space-y-2">
               <Label htmlFor="fullName">Full Name</Label>
@@ -121,8 +120,8 @@ const Signup = () => {
               Sign in
             </Link>
           </div>
-        </CardContent>
-      </Card>
+        </div>
+      </div>
     </div>
   );
 };
