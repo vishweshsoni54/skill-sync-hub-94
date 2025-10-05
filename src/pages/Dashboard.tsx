@@ -153,52 +153,40 @@ const Dashboard = () => {
 
         {/* Quick Actions */}
         <div className="grid md:grid-cols-3 gap-6 mb-12">
-          <Card className="hover-scale cursor-pointer shadow-card animate-fade-in border-primary/20" style={{ animationDelay: '0.2s' }} onClick={() => navigate("/students")}>
-            <CardHeader>
-              <Users className="w-8 h-8 text-primary mb-2" />
-              <CardTitle>Browse Students</CardTitle>
-              <CardDescription>
-                Find students with complementary skills
-              </CardDescription>
-            </CardHeader>
-            <CardContent>
-              <Button className="w-full gradient-card">
-                Explore Profiles
-              </Button>
-            </CardContent>
-          </Card>
+          <div className="p-8 animate-fade-in border-l-4 border-l-primary bg-card/30 rounded-lg cursor-pointer hover-scale" style={{ animationDelay: '0.2s' }} onClick={() => navigate("/students")}>
+            <Users className="w-8 h-8 text-primary mb-4" />
+            <h3 className="text-xl font-bold mb-2">Browse Students</h3>
+            <p className="text-sm text-muted-foreground mb-6">
+              Find students with complementary skills
+            </p>
+            <Button className="w-full gradient-card">
+              Explore Profiles
+            </Button>
+          </div>
 
-          <Card className="hover-scale cursor-pointer shadow-card animate-fade-in border-accent/20" style={{ animationDelay: '0.3s' }} onClick={() => navigate("/projects")}>
-            <CardHeader>
-              <Rocket className="w-8 h-8 text-accent mb-2" />
-              <CardTitle>Browse Projects</CardTitle>
-              <CardDescription>
-                Join exciting open projects and collaborate
-              </CardDescription>
-            </CardHeader>
-            <CardContent>
-              <Button className="w-full" style={{ background: 'var(--gradient-accent)' }}>
-                View Projects
-              </Button>
-            </CardContent>
-          </Card>
+          <div className="p-8 animate-fade-in border-l-4 border-l-accent bg-card/30 rounded-lg cursor-pointer hover-scale" style={{ animationDelay: '0.3s' }} onClick={() => navigate("/projects")}>
+            <Rocket className="w-8 h-8 text-accent mb-4" />
+            <h3 className="text-xl font-bold mb-2">Browse Projects</h3>
+            <p className="text-sm text-muted-foreground mb-6">
+              Join exciting open projects and collaborate
+            </p>
+            <Button className="w-full" style={{ background: 'var(--gradient-accent)' }}>
+              View Projects
+            </Button>
+          </div>
 
-          <Card className="hover-scale cursor-pointer shadow-card animate-fade-in border-secondary/20" style={{ animationDelay: '0.4s' }} onClick={() => navigate("/pitches")}>
-            <CardHeader>
-              <div className="w-8 h-8 rounded-full bg-secondary/20 flex items-center justify-center mb-2">
-                <span className="text-secondary font-bold text-xl">💡</span>
-              </div>
-              <CardTitle>Anonymous Pitches</CardTitle>
-              <CardDescription>
-                Share ideas without revealing identity
-              </CardDescription>
-            </CardHeader>
-            <CardContent>
-              <Button variant="outline" className="w-full border-secondary text-secondary hover:bg-secondary/10">
-                Browse Pitches
-              </Button>
-            </CardContent>
-          </Card>
+          <div className="p-8 animate-fade-in border-l-4 border-l-secondary bg-card/30 rounded-lg cursor-pointer hover-scale" style={{ animationDelay: '0.4s' }} onClick={() => navigate("/pitches")}>
+            <div className="w-8 h-8 rounded-full bg-secondary/20 flex items-center justify-center mb-4">
+              <span className="text-secondary font-bold text-xl">💡</span>
+            </div>
+            <h3 className="text-xl font-bold mb-2">Anonymous Pitches</h3>
+            <p className="text-sm text-muted-foreground mb-6">
+              Share ideas without revealing identity
+            </p>
+            <Button variant="outline" className="w-full border-secondary text-secondary hover:bg-secondary/10">
+              Browse Pitches
+            </Button>
+          </div>
         </div>
 
         {/* Featured Students Preview */}
@@ -209,31 +197,27 @@ const Dashboard = () => {
           </div>
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
             {students.map((student, i) => (
-              <Card key={student.id} className="hover-scale shadow-card animate-fade-in cursor-pointer" style={{ animationDelay: `${0.5 + i * 0.1}s` }} onClick={() => navigate(`/messages?user=${student.id}`)}>
-                <CardHeader>
-                  <div className="flex items-start justify-between">
-                    <div>
-                      <CardTitle className="text-lg">{student.full_name}</CardTitle>
-                      <CardDescription>
-                        {student.major && student.year ? `${student.major} • ${student.year}` : student.major || student.year || "Student"}
-                      </CardDescription>
-                    </div>
-                    <div className="w-12 h-12 rounded-full gradient-card" />
+              <div key={student.id} className="p-6 bg-card/30 rounded-lg border border-border animate-fade-in cursor-pointer hover-scale" style={{ animationDelay: `${0.5 + i * 0.1}s` }} onClick={() => navigate(`/messages?user=${student.id}`)}>
+                <div className="flex items-start justify-between mb-4">
+                  <div>
+                    <h4 className="text-lg font-bold">{student.full_name}</h4>
+                    <p className="text-sm text-muted-foreground">
+                      {student.major && student.year ? `${student.major} • ${student.year}` : student.major || student.year || "Student"}
+                    </p>
                   </div>
-                </CardHeader>
-                <CardContent>
-                  <p className="text-sm text-muted-foreground mb-4 line-clamp-2">
-                    {student.bio || "No bio yet."}
-                  </p>
-                  {student.user_skills && student.user_skills.length > 0 && (
-                    <div className="flex flex-wrap gap-2">
-                      {student.user_skills.slice(0, 3).map((us: any) => (
-                        <Badge key={us.id} variant="secondary">{us.skills.name}</Badge>
-                      ))}
-                    </div>
-                  )}
-                </CardContent>
-              </Card>
+                  <div className="w-12 h-12 rounded-full gradient-card" />
+                </div>
+                <p className="text-sm text-muted-foreground mb-4 line-clamp-2">
+                  {student.bio || "No bio yet."}
+                </p>
+                {student.user_skills && student.user_skills.length > 0 && (
+                  <div className="flex flex-wrap gap-2">
+                    {student.user_skills.slice(0, 3).map((us: any) => (
+                      <Badge key={us.id} variant="secondary">{us.skills.name}</Badge>
+                    ))}
+                  </div>
+                )}
+              </div>
             ))}
           </div>
         </section>
@@ -248,34 +232,30 @@ const Dashboard = () => {
             {projects.map((project, i) => {
               const memberCount = project.project_members?.[0]?.count || 0;
               return (
-                <Card key={project.id} className="hover-scale shadow-card animate-fade-in border-l-4 border-l-accent cursor-pointer" style={{ animationDelay: `${0.8 + i * 0.1}s` }} onClick={() => navigate("/projects")}>
-                  <CardHeader>
-                    <div className="flex items-start justify-between">
-                      <div>
-                        <CardTitle>{project.title}</CardTitle>
-                        <CardDescription>
-                          by {project.profiles?.full_name} • {memberCount}/{project.max_members} members
-                        </CardDescription>
-                      </div>
-                      <Badge className="bg-accent text-accent-foreground">Open</Badge>
+                <div key={project.id} className="p-6 bg-card/30 rounded-lg border-l-4 border-l-accent animate-fade-in cursor-pointer hover-scale" style={{ animationDelay: `${0.8 + i * 0.1}s` }} onClick={() => navigate("/projects")}>
+                  <div className="flex items-start justify-between mb-4">
+                    <div>
+                      <h4 className="text-xl font-bold">{project.title}</h4>
+                      <p className="text-sm text-muted-foreground">
+                        by {project.profiles?.full_name} • {memberCount}/{project.max_members} members
+                      </p>
                     </div>
-                  </CardHeader>
-                  <CardContent>
-                    <p className="text-sm text-muted-foreground mb-4 line-clamp-2">
-                      {project.description || "No description provided."}
-                    </p>
-                    {project.project_skills && project.project_skills.length > 0 && (
-                      <div className="flex flex-wrap gap-2 mb-4">
-                        {project.project_skills.slice(0, 3).map((ps: any) => (
-                          <Badge key={ps.id} variant="outline">{ps.skills.name}</Badge>
-                        ))}
-                      </div>
-                    )}
-                    <Button variant="outline" className="w-full">
-                      Learn More
-                    </Button>
-                  </CardContent>
-                </Card>
+                    <Badge className="bg-accent text-accent-foreground">Open</Badge>
+                  </div>
+                  <p className="text-sm text-muted-foreground mb-4 line-clamp-2">
+                    {project.description || "No description provided."}
+                  </p>
+                  {project.project_skills && project.project_skills.length > 0 && (
+                    <div className="flex flex-wrap gap-2 mb-4">
+                      {project.project_skills.slice(0, 3).map((ps: any) => (
+                        <Badge key={ps.id} variant="outline">{ps.skills.name}</Badge>
+                      ))}
+                    </div>
+                  )}
+                  <Button variant="outline" className="w-full">
+                    Learn More
+                  </Button>
+                </div>
               );
             })}
           </div>

@@ -286,53 +286,49 @@ const Projects = () => {
             const spotsLeft = project.max_members - memberCount;
 
             return (
-              <Card
+              <div
                 key={project.id}
-                className="hover-scale shadow-card animate-fade-in border-l-4 border-l-accent"
+                className="p-6 bg-card/30 rounded-lg border-l-4 border-l-accent animate-fade-in hover-scale"
               >
-                <CardHeader>
-                  <div className="flex items-start justify-between">
-                    <div>
-                      <CardTitle>{project.title}</CardTitle>
-                      <CardDescription>
-                        by {project.profiles?.full_name}
-                      </CardDescription>
-                    </div>
-                    <Badge className="bg-accent text-accent-foreground">Open</Badge>
+                <div className="flex items-start justify-between mb-4">
+                  <div>
+                    <h3 className="text-xl font-bold">{project.title}</h3>
+                    <p className="text-sm text-muted-foreground">
+                      by {project.profiles?.full_name}
+                    </p>
                   </div>
-                </CardHeader>
-                <CardContent>
-                  <p className="text-sm text-muted-foreground mb-4 line-clamp-3">
-                    {project.description || "No description provided."}
-                  </p>
-                  {project.project_skills && project.project_skills.length > 0 && (
-                    <div className="flex flex-wrap gap-2 mb-4">
-                      {project.project_skills.map((ps: any) => (
-                        <Badge key={ps.id} variant="outline">
-                          {ps.skills.name}
-                        </Badge>
-                      ))}
-                    </div>
+                  <Badge className="bg-accent text-accent-foreground">Open</Badge>
+                </div>
+                <p className="text-sm text-muted-foreground mb-4 line-clamp-3">
+                  {project.description || "No description provided."}
+                </p>
+                {project.project_skills && project.project_skills.length > 0 && (
+                  <div className="flex flex-wrap gap-2 mb-4">
+                    {project.project_skills.map((ps: any) => (
+                      <Badge key={ps.id} variant="outline">
+                        {ps.skills.name}
+                      </Badge>
+                    ))}
+                  </div>
+                )}
+                <div className="flex items-center justify-between">
+                  <div className="flex items-center gap-2 text-sm text-muted-foreground">
+                    <Users className="w-4 h-4" />
+                    <span>
+                      {memberCount}/{project.max_members} members
+                    </span>
+                  </div>
+                  {spotsLeft > 0 && (
+                    <Button
+                      variant="outline"
+                      size="sm"
+                      onClick={() => handleJoinProject(project.id)}
+                    >
+                      Join Project
+                    </Button>
                   )}
-                  <div className="flex items-center justify-between">
-                    <div className="flex items-center gap-2 text-sm text-muted-foreground">
-                      <Users className="w-4 h-4" />
-                      <span>
-                        {memberCount}/{project.max_members} members
-                      </span>
-                    </div>
-                    {spotsLeft > 0 && (
-                      <Button
-                        variant="outline"
-                        size="sm"
-                        onClick={() => handleJoinProject(project.id)}
-                      >
-                        Join Project
-                      </Button>
-                    )}
-                  </div>
-                </CardContent>
-              </Card>
+                </div>
+              </div>
             );
           })}
         </div>

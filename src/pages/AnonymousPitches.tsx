@@ -247,51 +247,47 @@ const AnonymousPitches = () => {
             </h2>
             <div className="grid md:grid-cols-2 gap-6">
               {myPitches.map((pitch) => (
-                <Card key={pitch.id} className="shadow-card border-l-4 border-l-secondary">
-                  <CardHeader>
-                    <div className="flex items-start justify-between">
-                      <div>
-                        <CardTitle>{pitch.title}</CardTitle>
-                        <CardDescription>
-                          {pitch.pitch_interest?.length || 0} interested users
-                        </CardDescription>
-                      </div>
-                      <Badge variant={pitch.status === "open" ? "default" : "secondary"}>
-                        {pitch.status === "open" ? "Anonymous" : "Revealed"}
-                      </Badge>
+                <div key={pitch.id} className="p-6 bg-card/30 rounded-lg border-l-4 border-l-secondary">
+                  <div className="flex items-start justify-between mb-4">
+                    <div>
+                      <h3 className="text-xl font-bold">{pitch.title}</h3>
+                      <p className="text-sm text-muted-foreground">
+                        {pitch.pitch_interest?.length || 0} interested users
+                      </p>
                     </div>
-                  </CardHeader>
-                  <CardContent>
-                    <p className="text-sm text-muted-foreground mb-4">{pitch.description}</p>
-                    {pitch.required_skills && pitch.required_skills.length > 0 && (
-                      <div className="flex flex-wrap gap-2 mb-4">
-                        {pitch.required_skills.map((skill: string, idx: number) => (
-                          <Badge key={idx} variant="outline">{skill}</Badge>
-                        ))}
-                      </div>
-                    )}
-                    {pitch.status === "open" ? (
-                      <Button
-                        variant="outline"
-                        className="w-full"
-                        onClick={() => handleRevealPitch(pitch.id)}
-                      >
-                        <Eye className="w-4 h-4 mr-2" />
-                        Reveal Identity
-                      </Button>
-                    ) : (
-                      <div className="space-y-2">
-                        <p className="text-sm font-medium">Interested Users:</p>
-                        {pitch.pitch_interest?.map((interest: any) => (
-                          <div key={interest.id} className="flex items-center gap-2 p-2 bg-accent/10 rounded">
-                            <div className="w-8 h-8 rounded-full gradient-card" />
-                            <span className="text-sm">{interest.profiles?.full_name}</span>
-                          </div>
-                        ))}
-                      </div>
-                    )}
-                  </CardContent>
-                </Card>
+                    <Badge variant={pitch.status === "open" ? "default" : "secondary"}>
+                      {pitch.status === "open" ? "Anonymous" : "Revealed"}
+                    </Badge>
+                  </div>
+                  <p className="text-sm text-muted-foreground mb-4">{pitch.description}</p>
+                  {pitch.required_skills && pitch.required_skills.length > 0 && (
+                    <div className="flex flex-wrap gap-2 mb-4">
+                      {pitch.required_skills.map((skill: string, idx: number) => (
+                        <Badge key={idx} variant="outline">{skill}</Badge>
+                      ))}
+                    </div>
+                  )}
+                  {pitch.status === "open" ? (
+                    <Button
+                      variant="outline"
+                      className="w-full"
+                      onClick={() => handleRevealPitch(pitch.id)}
+                    >
+                      <Eye className="w-4 h-4 mr-2" />
+                      Reveal Identity
+                    </Button>
+                  ) : (
+                    <div className="space-y-2">
+                      <p className="text-sm font-medium">Interested Users:</p>
+                      {pitch.pitch_interest?.map((interest: any) => (
+                        <div key={interest.id} className="flex items-center gap-2 p-2 bg-accent/10 rounded">
+                          <div className="w-8 h-8 rounded-full gradient-card" />
+                          <span className="text-sm">{interest.profiles?.full_name}</span>
+                        </div>
+                      ))}
+                    </div>
+                  )}
+                </div>
               ))}
             </div>
           </section>
@@ -302,36 +298,32 @@ const AnonymousPitches = () => {
           <h2 className="text-2xl font-bold mb-6">Browse Anonymous Ideas</h2>
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
             {pitches.map((pitch) => (
-              <Card key={pitch.id} className="hover-scale shadow-card animate-fade-in">
-                <CardHeader>
-                  <div className="flex items-start justify-between">
-                    <CardTitle className="flex items-center gap-2">
-                      <EyeOff className="w-4 h-4" />
-                      {pitch.title}
-                    </CardTitle>
+              <div key={pitch.id} className="p-6 bg-card/30 rounded-lg border border-border animate-fade-in hover-scale">
+                <div className="flex items-start justify-between mb-2">
+                  <h3 className="text-lg font-bold flex items-center gap-2">
+                    <EyeOff className="w-4 h-4" />
+                    {pitch.title}
+                  </h3>
+                </div>
+                <p className="text-sm text-muted-foreground mb-4">Posted anonymously</p>
+                <p className="text-sm text-muted-foreground mb-4 line-clamp-3">
+                  {pitch.description}
+                </p>
+                {pitch.required_skills && pitch.required_skills.length > 0 && (
+                  <div className="flex flex-wrap gap-2 mb-4">
+                    {pitch.required_skills.map((skill: string, idx: number) => (
+                      <Badge key={idx} variant="secondary">{skill}</Badge>
+                    ))}
                   </div>
-                  <CardDescription>Posted anonymously</CardDescription>
-                </CardHeader>
-                <CardContent>
-                  <p className="text-sm text-muted-foreground mb-4 line-clamp-3">
-                    {pitch.description}
-                  </p>
-                  {pitch.required_skills && pitch.required_skills.length > 0 && (
-                    <div className="flex flex-wrap gap-2 mb-4">
-                      {pitch.required_skills.map((skill: string, idx: number) => (
-                        <Badge key={idx} variant="secondary">{skill}</Badge>
-                      ))}
-                    </div>
-                  )}
-                  <Button
-                    variant="outline"
-                    className="w-full"
-                    onClick={() => handleExpressInterest(pitch.id)}
-                  >
-                    Express Interest
-                  </Button>
-                </CardContent>
-              </Card>
+                )}
+                <Button
+                  variant="outline"
+                  className="w-full"
+                  onClick={() => handleExpressInterest(pitch.id)}
+                >
+                  Express Interest
+                </Button>
+              </div>
             ))}
           </div>
 

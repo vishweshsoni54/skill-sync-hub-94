@@ -160,55 +160,51 @@ const Students = () => {
 
         <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
           {filteredStudents.map((student) => (
-            <Card key={student.id} className="hover-scale shadow-card animate-fade-in">
-              <CardHeader>
-                <div className="flex items-start justify-between">
-                  <div className="flex-1">
-                    <CardTitle className="text-lg">{student.full_name}</CardTitle>
-                    <CardDescription>
-                      {student.major && student.year
-                        ? `${student.major} • ${student.year}`
-                        : student.major || student.year || "Student"}
-                    </CardDescription>
-                  </div>
-                  <div className="w-12 h-12 rounded-full gradient-card" />
+            <div key={student.id} className="p-6 bg-card/30 rounded-lg border border-border animate-fade-in hover-scale">
+              <div className="flex items-start justify-between mb-4">
+                <div className="flex-1">
+                  <h3 className="text-lg font-bold">{student.full_name}</h3>
+                  <p className="text-sm text-muted-foreground">
+                    {student.major && student.year
+                      ? `${student.major} • ${student.year}`
+                      : student.major || student.year || "Student"}
+                  </p>
                 </div>
-              </CardHeader>
-              <CardContent>
-                <p className="text-sm text-muted-foreground mb-4 line-clamp-2">
-                  {student.bio || "No bio yet."}
-                </p>
-                {student.user_skills && student.user_skills.length > 0 && (
-                  <div className="flex flex-wrap gap-2 mb-4">
-                    {student.user_skills.slice(0, 3).map((us: any) => (
-                      <Badge key={us.id} variant="secondary">
-                        {us.skills.name}
-                      </Badge>
-                    ))}
-                    {student.user_skills.length > 3 && (
-                      <Badge variant="outline">+{student.user_skills.length - 3}</Badge>
-                    )}
-                  </div>
-                )}
-                {student.user_badges && student.user_badges.length > 0 && (
-                  <div className="flex gap-1 mb-4">
-                    {student.user_badges.slice(0, 4).map((ub: any) => (
-                      <span key={ub.id} className="text-xl" title={ub.badges.name}>
-                        {ub.badges.icon}
-                      </span>
-                    ))}
-                  </div>
-                )}
-                <Button
-                  variant="outline"
-                  className="w-full"
-                  onClick={() => handleMessage(student.id)}
-                >
-                  <MessageSquare className="w-4 h-4 mr-2" />
-                  Message
-                </Button>
-              </CardContent>
-            </Card>
+                <div className="w-12 h-12 rounded-full gradient-card" />
+              </div>
+              <p className="text-sm text-muted-foreground mb-4 line-clamp-2">
+                {student.bio || "No bio yet."}
+              </p>
+              {student.user_skills && student.user_skills.length > 0 && (
+                <div className="flex flex-wrap gap-2 mb-4">
+                  {student.user_skills.slice(0, 3).map((us: any) => (
+                    <Badge key={us.id} variant="secondary">
+                      {us.skills.name}
+                    </Badge>
+                  ))}
+                  {student.user_skills.length > 3 && (
+                    <Badge variant="outline">+{student.user_skills.length - 3}</Badge>
+                  )}
+                </div>
+              )}
+              {student.user_badges && student.user_badges.length > 0 && (
+                <div className="flex gap-1 mb-4">
+                  {student.user_badges.slice(0, 4).map((ub: any) => (
+                    <span key={ub.id} className="text-xl" title={ub.badges.name}>
+                      {ub.badges.icon}
+                    </span>
+                  ))}
+                </div>
+              )}
+              <Button
+                variant="outline"
+                className="w-full"
+                onClick={() => handleMessage(student.id)}
+              >
+                <MessageSquare className="w-4 h-4 mr-2" />
+                Message
+              </Button>
+            </div>
           ))}
         </div>
 
