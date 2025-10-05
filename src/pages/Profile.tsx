@@ -173,7 +173,7 @@ const Profile = () => {
 
       <main className="container mx-auto px-4 py-8 max-w-4xl">
         {/* Basic Info */}
-        <div className="mb-6 bg-card/30 rounded-lg border border-border">
+        <div className="mb-6">
           <div className="p-6">
             <h3 className="text-2xl font-semibold mb-2">Basic Information</h3>
             <p className="text-sm text-muted-foreground mb-6">Update your profile details</p>
@@ -221,7 +221,7 @@ const Profile = () => {
         </div>
 
         {/* Skills */}
-        <div className="mb-6 bg-card/30 rounded-lg border border-border">
+        <div className="mb-6">
           <div className="p-6">
             <h3 className="text-2xl font-semibold mb-2">Skills</h3>
             <p className="text-sm text-muted-foreground mb-6">Add your skills and proficiency levels</p>
@@ -268,7 +268,7 @@ const Profile = () => {
         </div>
 
         {/* Badges */}
-        <div className="bg-card/30 rounded-lg border border-border">
+        <div>
           <div className="p-6">
             <h3 className="text-2xl font-semibold mb-2 flex items-center gap-2">
               <Award className="w-5 h-5" />

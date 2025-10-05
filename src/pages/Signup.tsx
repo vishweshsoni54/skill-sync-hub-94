@@ -51,7 +51,7 @@ const Signup = () => {
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-background via-accent/5 to-secondary/5 p-4">
-      <div className="w-full max-w-md bg-card/30 rounded-lg border border-border animate-fade-in">
+      <div className="w-full max-w-md animate-fade-in">
         <div className="p-6 space-y-1">
           <h3 className="text-3xl text-center font-semibold gradient-accent bg-clip-text text-transparent">
             Join SkillMatch

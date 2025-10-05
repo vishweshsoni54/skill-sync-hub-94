@@ -181,7 +181,7 @@ const Messages = () => {
 
       <div className="flex-1 container mx-auto px-4 py-6 flex gap-4 overflow-hidden">
         {/* Conversations List */}
-        <div className="w-80 bg-card/30 rounded-lg border border-border flex flex-col">
+        <div className="w-80 flex flex-col">
           <div className="p-4 flex-1 overflow-y-auto">
             <div className="flex items-center justify-between mb-4">
               <h3 className="font-semibold">Conversations</h3>
@@ -247,7 +247,7 @@ const Messages = () => {
         </div>
 
         {/* Chat Area */}
-        <div className="flex-1 bg-card/30 rounded-lg border border-border flex flex-col">
+        <div className="flex-1 flex flex-col">
           {selectedUser ? (
             <>
               <div className="border-b p-4">

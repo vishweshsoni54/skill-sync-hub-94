@@ -246,7 +246,7 @@ const AnonymousPitches = () => {
             </h2>
             <div className="grid md:grid-cols-2 gap-6">
               {myPitches.map((pitch) => (
-                <div key={pitch.id} className="p-6 bg-card/30 rounded-lg border-l-4 border-l-secondary">
+                <div key={pitch.id} className="p-6">
                   <div className="flex items-start justify-between mb-4">
                     <div>
                       <h3 className="text-xl font-bold">{pitch.title}</h3>
@@ -297,7 +297,7 @@ const AnonymousPitches = () => {
           <h2 className="text-2xl font-bold mb-6">Browse Anonymous Ideas</h2>
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
             {pitches.map((pitch) => (
-              <div key={pitch.id} className="p-6 bg-card/30 rounded-lg border border-border animate-fade-in hover-scale">
+              <div key={pitch.id} className="p-6 animate-fade-in hover-scale">
                 <div className="flex items-start justify-between mb-2">
                   <h3 className="text-lg font-bold flex items-center gap-2">
                     <EyeOff className="w-4 h-4" />
@@ -327,12 +327,10 @@ const AnonymousPitches = () => {
           </div>
 
           {pitches.length === 0 && (
-            <div className="bg-card/30 rounded-lg border border-border">
-              <div className="py-12 text-center">
-                <p className="text-muted-foreground">
-                  No anonymous pitches available. Create one to get started!
-                </p>
-              </div>
+            <div className="py-12 text-center">
+              <p className="text-muted-foreground">
+                No anonymous pitches available. Create one to get started!
+              </p>
             </div>
           )}
         </section>

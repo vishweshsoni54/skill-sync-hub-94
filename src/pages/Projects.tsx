@@ -260,7 +260,7 @@ const Projects = () => {
 
       <main className="container mx-auto px-4 py-8">
         {/* Search */}
-        <div className="mb-8 bg-card/30 rounded-lg border border-border">
+        <div className="mb-8">
           <div className="p-6">
             <div className="relative">
               <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground w-5 h-5" />
@@ -287,7 +287,7 @@ const Projects = () => {
             return (
               <div
                 key={project.id}
-                className="p-6 bg-card/30 rounded-lg border-l-4 border-l-accent animate-fade-in hover-scale"
+                className="p-6 animate-fade-in hover-scale"
               >
                 <div className="flex items-start justify-between mb-4">
                   <div>
@@ -333,10 +333,8 @@ const Projects = () => {
         </div>
 
         {filteredProjects.length === 0 && (
-          <div className="bg-card/30 rounded-lg border border-border">
-            <div className="py-12 text-center">
-              <p className="text-muted-foreground">No projects found. Be the first to create one!</p>
-            </div>
+          <div className="py-12 text-center">
+            <p className="text-muted-foreground">No projects found. Be the first to create one!</p>
           </div>
         )}
       </main>

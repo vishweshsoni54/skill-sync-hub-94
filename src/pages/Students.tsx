@@ -2,7 +2,6 @@ import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
 import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Input } from "@/components/ui/input";
 import { ArrowLeft, MessageSquare, Search } from "lucide-react";
@@ -124,8 +123,8 @@ const Students = () => {
 
       <main className="container mx-auto px-4 py-8">
         {/* Search & Filters */}
-        <Card className="mb-8 shadow-card">
-          <CardContent className="pt-6">
+        <div className="mb-8">
+          <div className="pt-6">
             <div className="flex gap-4 flex-col md:flex-row">
               <div className="relative flex-1">
                 <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground w-5 h-5" />
@@ -150,8 +149,8 @@ const Students = () => {
                 </SelectContent>
               </Select>
             </div>
-          </CardContent>
-        </Card>
+          </div>
+        </div>
 
         {/* Results */}
         <div className="mb-4 text-sm text-muted-foreground">
@@ -160,7 +159,7 @@ const Students = () => {
 
         <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
           {filteredStudents.map((student) => (
-            <div key={student.id} className="p-6 bg-card/30 rounded-lg border border-border animate-fade-in hover-scale">
+            <div key={student.id} className="p-6 animate-fade-in hover-scale">
               <div className="flex items-start justify-between mb-4">
                 <div className="flex-1">
                   <h3 className="text-lg font-bold">{student.full_name}</h3>
@@ -209,11 +208,9 @@ const Students = () => {
         </div>
 
         {filteredStudents.length === 0 && (
-          <Card className="shadow-card">
-            <CardContent className="py-12 text-center">
-              <p className="text-muted-foreground">No students found matching your criteria.</p>
-            </CardContent>
-          </Card>
+          <div className="py-12 text-center">
+            <p className="text-muted-foreground">No students found matching your criteria.</p>
+          </div>
         )}
       </main>
     </div>
