@@ -119,32 +119,27 @@ const Index = () => {
       {/* Features Section */}
       <section className="py-24 px-4 bg-gradient-to-b from-background to-primary/5">
         <div className="container mx-auto">
-          <div className="text-center mb-16 animate-fade-in">
-            <h2 className="text-4xl md:text-5xl font-bold mb-4">
-              Everything You Need to
-              <br />
-              <span className="gradient-hero bg-clip-text text-transparent">Build Amazing Things</span>
+          <div className="text-center mb-12 animate-fade-in">
+            <h2 className="text-4xl md:text-5xl font-bold mb-8">
+              Everything You Need to Know
             </h2>
-            <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
-              SkillMatch provides all the tools students need to connect, collaborate, and create successful projects together.
-            </p>
           </div>
+
+          <div className="h-1 w-full bg-gradient-to-r from-primary via-accent to-secondary mb-16" />
 
           <div className="grid md:grid-cols-2 gap-8 max-w-5xl mx-auto">
             {features.map((feature, index) => (
-              <Card 
+              <div 
                 key={index} 
-                className="hover-scale shadow-card animate-fade-in border-primary/10"
+                className="p-8 animate-fade-in"
                 style={{ animationDelay: `${index * 0.1}s` }}
               >
-                <CardHeader>
-                  <feature.icon className={`w-12 h-12 ${feature.color} mb-4`} />
-                  <CardTitle className="text-2xl">{feature.title}</CardTitle>
-                  <CardDescription className="text-base">
-                    {feature.description}
-                  </CardDescription>
-                </CardHeader>
-              </Card>
+                <feature.icon className={`w-12 h-12 ${feature.color} mb-4`} />
+                <h3 className="text-2xl font-bold mb-3">{feature.title}</h3>
+                <p className="text-base text-muted-foreground">
+                  {feature.description}
+                </p>
+              </div>
             ))}
           </div>
         </div>
