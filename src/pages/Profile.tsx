@@ -2,7 +2,6 @@ import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
 import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Badge } from "@/components/ui/badge";
@@ -174,12 +173,12 @@ const Profile = () => {
 
       <main className="container mx-auto px-4 py-8 max-w-4xl">
         {/* Basic Info */}
-        <Card className="mb-6 shadow-card">
-          <CardHeader>
-            <CardTitle>Basic Information</CardTitle>
-            <CardDescription>Update your profile details</CardDescription>
-          </CardHeader>
-          <CardContent className="space-y-4">
+        <div className="mb-6 bg-card/30 rounded-lg border border-border">
+          <div className="p-6">
+            <h3 className="text-2xl font-semibold mb-2">Basic Information</h3>
+            <p className="text-sm text-muted-foreground mb-6">Update your profile details</p>
+          </div>
+          <div className="px-6 pb-6 space-y-4">
             <div>
               <label className="text-sm font-medium mb-2 block">Full Name</label>
               <Input
@@ -218,16 +217,16 @@ const Profile = () => {
             <Button onClick={handleSave} disabled={saving} className="w-full gradient-card">
               {saving ? "Saving..." : "Save Profile"}
             </Button>
-          </CardContent>
-        </Card>
+          </div>
+        </div>
 
         {/* Skills */}
-        <Card className="mb-6 shadow-card">
-          <CardHeader>
-            <CardTitle>Skills</CardTitle>
-            <CardDescription>Add your skills and proficiency levels</CardDescription>
-          </CardHeader>
-          <CardContent className="space-y-4">
+        <div className="mb-6 bg-card/30 rounded-lg border border-border">
+          <div className="p-6">
+            <h3 className="text-2xl font-semibold mb-2">Skills</h3>
+            <p className="text-sm text-muted-foreground mb-6">Add your skills and proficiency levels</p>
+          </div>
+          <div className="px-6 pb-6 space-y-4">
             <div className="flex gap-2">
               <Select value={selectedSkill} onValueChange={setSelectedSkill}>
                 <SelectTrigger className="flex-1">
@@ -265,19 +264,19 @@ const Profile = () => {
                 </Badge>
               ))}
             </div>
-          </CardContent>
-        </Card>
+          </div>
+        </div>
 
         {/* Badges */}
-        <Card className="shadow-card">
-          <CardHeader>
-            <CardTitle className="flex items-center gap-2">
+        <div className="bg-card/30 rounded-lg border border-border">
+          <div className="p-6">
+            <h3 className="text-2xl font-semibold mb-2 flex items-center gap-2">
               <Award className="w-5 h-5" />
               Badges & Achievements
-            </CardTitle>
-            <CardDescription>Track your progress and earn badges</CardDescription>
-          </CardHeader>
-          <CardContent>
+            </h3>
+            <p className="text-sm text-muted-foreground mb-6">Track your progress and earn badges</p>
+          </div>
+          <div className="px-6 pb-6">
             <div className="space-y-4">
               {allBadges.map((badge) => {
                 const earned = badges.find((b) => b.badges.id === badge.id);
@@ -306,8 +305,8 @@ const Profile = () => {
                 );
               })}
             </div>
-          </CardContent>
-        </Card>
+          </div>
+        </div>
       </main>
     </div>
   );

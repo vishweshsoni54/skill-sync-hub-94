@@ -2,7 +2,6 @@ import { useEffect, useState } from "react";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
 import { Button } from "@/components/ui/button";
-import { Card, CardContent } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { useToast } from "@/hooks/use-toast";
 import { ArrowLeft, Send } from "lucide-react";
@@ -182,8 +181,8 @@ const Messages = () => {
 
       <div className="flex-1 container mx-auto px-4 py-6 flex gap-4 overflow-hidden">
         {/* Conversations List */}
-        <Card className="w-80 shadow-card flex flex-col">
-          <CardContent className="p-4 flex-1 overflow-y-auto">
+        <div className="w-80 bg-card/30 rounded-lg border border-border flex flex-col">
+          <div className="p-4 flex-1 overflow-y-auto">
             <div className="flex items-center justify-between mb-4">
               <h3 className="font-semibold">Conversations</h3>
               <Button 
@@ -244,11 +243,11 @@ const Messages = () => {
                 ))}
               </div>
             )}
-          </CardContent>
-        </Card>
+          </div>
+        </div>
 
         {/* Chat Area */}
-        <Card className="flex-1 shadow-card flex flex-col">
+        <div className="flex-1 bg-card/30 rounded-lg border border-border flex flex-col">
           {selectedUser ? (
             <>
               <div className="border-b p-4">
@@ -257,10 +256,10 @@ const Messages = () => {
                   <div>
                     <p className="font-semibold">{selectedUser.full_name}</p>
                     <p className="text-sm text-muted-foreground">{selectedUser.major}</p>
-                  </div>
-                </div>
-              </div>
-              <CardContent className="flex-1 p-4 overflow-y-auto">
+                   </div>
+                 </div>
+               </div>
+              <div className="flex-1 p-4 overflow-y-auto">
                 <div className="space-y-4">
                   {messages.map((msg) => {
                     const isOwn = msg.sender_id === currentUser?.id;
@@ -286,10 +285,10 @@ const Messages = () => {
                         </div>
                       </div>
                     );
-                  })}
-                </div>
-              </CardContent>
-              <div className="border-t p-4">
+                   })}
+                 </div>
+               </div>
+               <div className="border-t p-4">
                 <div className="flex gap-2">
                   <Input
                     value={newMessage}
@@ -302,13 +301,13 @@ const Messages = () => {
                   </Button>
                 </div>
               </div>
-            </>
-          ) : (
-            <CardContent className="flex-1 flex items-center justify-center">
-              <p className="text-muted-foreground">Select a conversation to start messaging</p>
-            </CardContent>
-          )}
-        </Card>
+             </>
+           ) : (
+             <div className="flex-1 flex items-center justify-center p-4">
+               <p className="text-muted-foreground">Select a conversation to start messaging</p>
+             </div>
+           )}
+         </div>
       </div>
     </div>
   );
